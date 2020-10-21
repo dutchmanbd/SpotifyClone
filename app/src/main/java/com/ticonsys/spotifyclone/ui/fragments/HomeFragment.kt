@@ -6,10 +6,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.ticonsys.spotifyclone.R
 import com.ticonsys.spotifyclone.databinding.FragmentHomeBinding
-import com.ticonsys.spotifyclone.internal.Resource
 import com.ticonsys.spotifyclone.internal.Status
-import com.ticonsys.spotifyclone.ui.activities.MainViewModel
 import com.ticonsys.spotifyclone.ui.adapters.SongAdapter
+import com.ticonsys.spotifyclone.ui.viewmodels.MainViewModel
 import com.zxdmjr.material_utils.hide
 import com.zxdmjr.material_utils.show
 import com.zxdmjr.material_utils.toast
