@@ -26,7 +26,7 @@
 
     </FrameLayout>
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/ivCurSongImage"
         android:layout_width="56dp"
         android:layout_height="56dp"
@@ -43,7 +43,7 @@
         app:layout_constraintEnd_toStartOf="@+id/ivPlayPause"
         app:layout_constraintStart_toEndOf="@+id/ivCurSongImage" />
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/ivPlayPause"
         android:layout_width="56dp"
         android:layout_height="56dp"

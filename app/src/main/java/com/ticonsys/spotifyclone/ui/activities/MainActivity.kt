@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.media.session.PlaybackStateCompat
 import androidx.activity.viewModels
+import androidx.core.view.isVisible
+import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.RequestManager
 import com.google.android.material.snackbar.Snackbar
@@ -16,6 +18,7 @@ import com.ticonsys.spotifyclone.internal.Status
 import com.ticonsys.spotifyclone.ui.adapters.SwipeSongAdapter
 import com.ticonsys.spotifyclone.ui.viewmodels.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -35,16 +38,18 @@ class MainActivity : AppCompatActivity() {
 
     private var playbackState: PlaybackStateCompat? = null
 
+    private val navController by lazy {
+        navMainHostFragment.findNavController()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.vpSong.apply {
-            adapter = swipeSongAdapter
-        }
-
         subscribeToObservers()
+
+        binding.vpSong.adapter = swipeSongAdapter
 
         binding.vpSong.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
             override fun onPageSelected(position: Int) {
@@ -64,6 +69,31 @@ class MainActivity : AppCompatActivity() {
                 viewModel.playOrToggleSong(it, true)
             }
         }
+
+        swipeSongAdapter.setOnItemClickListener { view, item ->
+            navController.navigate(R.id.globalActionToSongFragment)
+        }
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when(destination.id){
+                R.id.homeFragment -> showBottomBar()
+                R.id.songFragment -> hideBottomBar()
+                else -> showBottomBar()
+            }
+        }
+
+    }
+
+    private fun hideBottomBar(){
+        binding.ivCurSongImage.isVisible = false
+        binding.ivPlayPause.isVisible = false
+        binding.vpSong.isVisible = false
+    }
+
+    private fun showBottomBar(){
+        binding.ivCurSongImage.isVisible = true
+        binding.ivPlayPause.isVisible = true
+        binding.vpSong.isVisible = true
     }
 
     private fun switchViewPagerToCurrentSong(song: Song){
